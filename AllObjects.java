@@ -1,7 +1,7 @@
 import greenfoot.*; // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Cloud here.
+ * Write a description of class AllObjects here.
  * 
  * @author (João Paulo S. Abreu (joaoabreu@ufba.br), Mateus C. Moura
  *         (mateuschaves@ufba.br), Rafael P. Casaes Sampaio
@@ -11,26 +11,21 @@ import greenfoot.*; // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  *         (jefferson.raimon@ufba.br))
  * @version (a version number or a date)
  */
-public class Cloud extends AllObjects {
-    /* construtor */
-    public Cloud() {
-        // chama a imagem referente a classe
-        setImage("nuvem.png");
-    }
+public class AllObjects extends Actor {
+    int horScale;
+    int vertScale;
 
     /**
-     * Act - do whatever the Cloud wants to do. This method is called whenever
+     * Act - do whatever the AllObjects wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-
     public void act() {
-        // método usado para movimentar o objeto horizontalmente(X), sendo da direita
-        // para esquerda(-1)
-        setLocation(getX() - 1, getY());
-        // condicional para remover objeto na posição <=15px
-        if (getX() <= 15) {
-            ((Florest) getWorld()).removeObject(this);
-        }
+        // Add your action code here.
     }
 
+    public void scaleImage(int x, int y) {
+        horScale = x;
+        vertScale = y;
+        getImage().scale(getImage().getWidth() / horScale, getImage().getHeight() / vertScale);
+    }
 }
