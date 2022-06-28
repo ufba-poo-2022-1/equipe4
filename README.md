@@ -13,7 +13,7 @@ Projeto final da disciplina MATA55 2022.1 - UFBA
 
 O projeto consiste em um jogo chamado Escape Fire.
 
-Plataforma: Web / Greenfoot
+Plataforma: Web / Greenfoot -> https://www.greenfoot.org/scenarios/29872
 
 Linguagem de Programação utilizada: Java
 
@@ -24,46 +24,54 @@ Objetivo do jogo: Voar e comer cogumelos, evitar treta com os urubus e passar be
 ### Introdução ao jogo
 
 Conheça o papagaio guloso Parrot, que adora voar e comer cogumelos (muitos). Porém na sua querida floresta está ocorrendo uma terrivel queimada e há diversos urubus na localidade que não gostam dele. Ajude-o a se alimentar com cuidado, evitando o fogo e esses urubus.
+Parrot, o papagaio pode arremessar seus cogumelos para se defender dos urubus.
 
-##### Jogabilidade
+### Jogabilidade
 
-Teclado: Seta para Cima - Parrot vai para cima
+|TECLADO            |AÇÕES                            |
+|-------------------|---------------------------------|
+|Seta para Cima     | Parrot vai para cima            |
+|Seta para esquerda | Parrot vai para esquerda        |
+|Seta para direita  | Parrot vai para direita         |
+|Espaço             | Arremessa cogumelos nos inimigos|
 
-Seta para esquerda - Parrot vai para esquerda
+## Cenário
 
-Seta para direita - Parrot vai para direita
+![Fdia.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/Fdia.png)
 
+Floresta - lar do Parrot
 
+## Personagens
 
-##### Personagens
-
-![parrot.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/doc/images-docs/parrot.png)
+![parrot.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/papagaio.png)
 
 Parrot - O papagaio guloso e o protagonista
 
 
 
-![urubu.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/doc/images-docs/urubu.png)
+![urubu.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/urubu.png)
 
 Urubu - Antagonistas, não gostam do Parrot
 
 
 
-![fogo.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/doc/images-docs/fogo.png)
+![fogo.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/fogo.png)
 
 Fogo Místico - Não se importam com nada a não ser queimar tudo o que tiver no seu caminho. **Cuidado!**
 
 
 
-![cogumelo.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/doc/images-docs/cogumelo.png)
+![cogumelo.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/cogumeloMENOR.png)
 
 Cogumelo - A comida favorita do Parrot (**tente comer todas!**)
 
+![gunmush.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/gunmush.png)
 
+Gunmush - cogumelos que podem ser arremessados contra os inimigos
 
 #### Estrutura geral do Jogo
 
-![estrutura.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/doc/images-docs/estrutura.png)
+![estrutura.png](https://github.com/joaojpsa/Projeto-Final-POO-UFBA2022.1_EscapeFire/blob/main/images/struct.png)
 
 ### **World**
 
@@ -120,13 +128,15 @@ playloop();
 
 ```java
 public void act() {
-              
         if (Greenfoot.getRandomNumber(500) < 1) {
-            addObject(new Cloud(), 536, Greenfoot.getRandomNumber(91));
             addObject(new Fire(), 637, 331);
             addObject(new Vulture(), 570, 15);
             addObject(new Mushroom(), 470, 47);
-                       
+
+        }
+        if (Greenfoot.getRandomNumber(200) < 1) {
+            addObject(new Cloud(), 536, Greenfoot.getRandomNumber(91));
+ 
         }
         if (Greenfoot.getRandomNumber(600) < 1) {
             addObject(new Fire(), 606, 445);
@@ -140,6 +150,9 @@ public void act() {
         }
         if (Greenfoot.getRandomNumber(700) < 1) {
             addObject(new Vulture(), 552, Greenfoot.getRandomNumber(95));
+        }
+        if (Greenfoot.getRandomNumber(200) < 1) {
+            addObject(new Vulture(), 665, Greenfoot.getRandomNumber(189));
         }
 
     }
@@ -187,3 +200,67 @@ Método para chamar a classe GameOver
 | static void | stop   | Pausa a execução do jogo |
 
 
+### AllObjects
+
+Classe com os metodos e instancias que serão herdadas por objetos das outras classes.
+
+```java
+public class AllObjects extends Actor {
+    int horScale;
+    int vertScale;
+    int velDown = 1;
+    private int up = 7;
+
+```
+
+Método para dimensionar as imagens, quando necessário.
+```java
+public void scaleImage(int x, int y) {
+        horScale = x;
+        vertScale = y;
+        getImage().scale(getImage().getWidth() / horScale, getImage().getHeight() / vertScale);
+    }
+```
+
+Método para fazer o objeto(papagaio e cogumelos) cair
+```java
+public void fall() {
+        setLocation(getX(), getY() + velDown);
+    }
+```
+Movimentar objetos(direita, esquerda, pra cima)
+```java
+public void movers() {
+
+        if (Greenfoot.isKeyDown("right")) {
+            move(+1);
+            setImage(new GreenfootImage("pDireita.png"));
+        }
+
+        if (Greenfoot.isKeyDown("left")) {
+            move(-1);
+            setImage(new GreenfootImage("pEsquerda.png"));
+        }
+
+        if (Greenfoot.isKeyDown("up")) {
+            moveUp();
+        }
+
+    }
+```  
+Método que é chamado em outro método(movers), direção para cima.
+```java
+public void moveUp() {
+        setLocation(getX(), getY() - up);
+    }
+```
+Método usado para movimentar o objeto horizontalmente(X), sendo da direita para esquerda(-1)
+```java
+public void moveEnemies() {
+        setLocation(getX() - velDown, getY());
+        // condicional para remover objeto na posição <=15px
+        if (getX() <= 15) {
+            ((Florest) getWorld()).removeObject(this);
+        }
+    }
+```
